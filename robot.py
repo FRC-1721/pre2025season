@@ -1,11 +1,17 @@
 import wpilib
 import wpilib.drive
-from rev import CANSparkMax
+import rev
 
 class MyRobot(wpilib.TimedRobot):
     def robotInit(self):
         self.joystick = wpilib.Joystick(0)
-        self.motor = CANSparkMax(12, CANSparkLevel.motorType.kBrushless)
+        self.left = rev.SparkMax(1, rev.SparkLevel.motorType.kBrushless)
+        self.left2 = rev.SparkMax(3, rev.SparkLevel.motorType.kBrushless)
+        self.right = rev.SparkMax(2, rev.SparkLevel.motorType.kBrushless)
+        self.right2 = rev.SparkMax(4, rev.SparkLevel.motorType.kBrushless)
+
+        self.left2.follow(self.left)
+        self.right2.follow(self.right)
 
     def teleopPeriodic(self):
-        self.motor.set(self.joystick.getY())
+        self.left.set(0.1)
