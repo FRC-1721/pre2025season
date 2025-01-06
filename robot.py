@@ -1,8 +1,8 @@
 import wpilib
-import wpilib.drive
+import magicbot
 import rev
 
-class MyRobot(wpilib.TimedRobot):
+class Robot(magicbot.MagicRobot):
     def robotInit(self):
         self.joystick = wpilib.Joystick(0)
         self.left = rev.SparkMax(1, rev.SparkLevel.motorType.kBrushless)
