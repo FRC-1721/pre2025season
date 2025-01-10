@@ -1,17 +1,21 @@
 import wpilib
-import magicbot
+import wpilib.drive
+from magicbot import MagicRobot
 import rev
 
-class Robot(magicbot.MagicRobot):
-    def robotInit(self):
-        self.joystick = wpilib.Joystick(0)
-        self.left = rev.SparkMax(1, rev.SparkLowLevel.motorType.kBrushless)
-        self.left2 = rev.SparkMax(3, rev.SparkLowLevel.motorType.kBrushless)
-        self.right = rev.SparkMax(2, rev.SparkLowLevel.motorType.kBrushless)
-        self.right2 = rev.SparkMax(4, rev.SparkLowLevel.motorType.kBrushless)
+class Robot(MagicRobot):
+    def createObjects(self):
+        self.controller =  wpilib.XboxController(0)
+        
+        self.left1 = rev.SparkMax(21, rev.SparkLowLevel.MotorType.kBrushless)
+        self.left2 = rev.SparkMax(24, rev.SparkLowLevel.MotorType.kBrushless)
+        self.right1 = rev.SparkMax(22, rev.SparkLowLevel.MotorType.kBrushless)
+        self.right2 = rev.SparkMax(23, rev.SparkLowLevel.MotorType.kBrushless)
 
-        self.left2.follow(self.left)
-        self.right2.follow(self.right)
+        self.left = wpilib.MotorControllerGroup(self.left1, self.left2)
+        self.left.setInverted(True)
+        self.right = wpilib.MotorControllerGroup(self.right1, self.right2)
+        self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
 
     def teleopPeriodic(self):
-        self.left.set(0.1)
+        self.drive.arcadeDrive(self.controller.getRawAxis(1) * .5, self.controller.getRawAxis(2) * .5)
