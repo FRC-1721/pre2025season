@@ -2,11 +2,13 @@ import wpilib
 import wpilib.drive
 from magicbot import MagicRobot
 import rev
+from ntcore import NetworkTableInstance
+
 
 class Robot(MagicRobot):
     def createObjects(self):
-        self.controller =  wpilib.XboxController(0)
-        
+        self.controller = wpilib.XboxController(0)
+
         self.left1 = rev.SparkMax(21, rev.SparkLowLevel.MotorType.kBrushless)
         self.left2 = rev.SparkMax(24, rev.SparkLowLevel.MotorType.kBrushless)
         self.right1 = rev.SparkMax(22, rev.SparkLowLevel.MotorType.kBrushless)
@@ -17,5 +19,9 @@ class Robot(MagicRobot):
         self.right = wpilib.MotorControllerGroup(self.right1, self.right2)
         self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
 
+        self.nt = NetworkTableInstance.getDefault()
+
     def teleopPeriodic(self):
-        self.drive.arcadeDrive(self.controller.getRawAxis(1) * .5, self.controller.getRawAxis(2) * .5)
+        self.drive.arcadeDrive(
+            self.controller.getRawAxis(1) * 0.5, self.controller.getRawAxis(2) * 0.5
+        )
